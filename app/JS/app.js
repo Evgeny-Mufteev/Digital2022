@@ -134,27 +134,51 @@ function mufPopUp(el) {
       typography = document.querySelector(".typography"),
       bool = true,
       about = document.querySelector(".about-conference"),
-      body = document.body;
-      topPlusPadding = about.clientHeight+ parseInt(window.getComputedStyle(about, null).getPropertyValue('padding-top'));
+      body = document.body,
+      topPlusPadding = about.clientHeight+ parseInt(window.getComputedStyle(about, null).getPropertyValue('padding-top')),
+      i = 0,
+      arrService = new Array();
 
   lines.forEach((el) => {
     el.classList.add(bool? "right":"left");
     bool = !bool
   })
-
   
+  function mathHeight(scrollTop){
+    if(lines[i]){
+      let top = lines[i].getBoundingClientRect().top + window.pageYOffset - topPlusPadding;
+      console.log(top);
+      let count = top - scrollTop;
+      if(scrollTop >= top){
+        console.log(`Строка ${i}`);
+        arrService.push(lines[i]);
+        delete lines[i];
+        i++;
+      };
+      
+    }
+    someFunction(arrService);
+  }
+  
+  function someFunction(arrService){
+    arrService.forEach(element => {
+      let str = window.getComputedStyle(element),
+          matrix = new WebKitCSSMatrix(str.transform);
+      if(matrix.m41<800)
+        element.style.transform = `translateX(${matrix.m41+10}px)`;
+    });
+  }
 
-  body.onscroll =  ()=>{
+  body.onscroll = ()=>{
     var scrollTop = window.pageYOffset ? window.pageYOffset : (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
 
-    runLine(scrollTop);
+    mathHeight(scrollTop);
   };
 
-  function runLine(scrollTop){
-    let top = lines[0].getBoundingClientRect().top + window.pageYOffset - topPlusPadding;
 
-    if(scrollTop >= top) console.log("Я родился!");
-  }
+
+    
+  
 
 
   

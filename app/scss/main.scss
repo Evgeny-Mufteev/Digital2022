@@ -1326,7 +1326,9 @@ input:-webkit-autofill {
   transform: rotate(-180deg);
 }
 
-
+.lines{
+  transform: translateX(0px);
+}
 
 // Адаптив
 @media screen and (min-width: 1025px) and (max-width: 1349px) {
